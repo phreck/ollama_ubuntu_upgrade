@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$(id -u)" -ne 0 ]; then
+  echo "Error: This script must be run as root. Please use sudo." >&2
+  exit 1
+fi
+
 # Ollama Upgrade Script
 # This script upgrades Ollama while preserving your custom service configuration
 
