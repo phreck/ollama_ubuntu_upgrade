@@ -1,23 +1,29 @@
 #!/bin/bash
 #
 # A script to upgrade Ollama while preserving a custom systemd service file.
+# It will automatically prompt for sudo if not run as root.
 #
 
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
 # --- Configuration ---
-# Ensure the script is run as root
+# Check for root privileges and re-launch with sudo if necessary.
 if [ "$(id -u)" -ne 0 ]; then
-  echo "Error: This script must be run as root. Please use sudo." >&2
-  exit 1
+  echo "This script requires root privileges to manage systemd services."
+  echo "Please enter your password to continue."
+  # Re-execute the script with sudo, passing all original arguments.
+  sudo -- "$0" "$@"
+  # Exit the original, non-privileged script.
+  exit $?
 fi
+
 
 # Colors and formatting
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
-RED='\033[0;31m' # Added missing RED color
+RED='\033[0;31m'
 NC='\033[0m'     # No Color
 BOLD='\033[1m'
 
